@@ -16,7 +16,7 @@ from django.utils.decorators import method_decorator
 
 class OrderSthView(forms.ModalFormView):
     form_class = OrderForm
-    template_name = 'leonardo_module_kkadavy/order_sth.html'
+    template_name = 'leonardo_kkadavy/order_sth.html'
     submit_label = _("Order")
 
     def get_context_data(self, **kwargs):
