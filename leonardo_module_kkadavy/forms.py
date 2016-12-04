@@ -1,7 +1,11 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 from __future__ import absolute_import
 
-from crispy_forms.layout import HTML, Layout, Field, Fieldset, MultiField, Div
+from django.utils import timezone
+
+from crispy_forms.layout import \
+    HTML, Layout, Field, Fieldset, MultiField, Div
+from crispy_forms.bootstrap import PrependedText
 from django.contrib.auth import authenticate, get_user_model, login
 from django.contrib.auth.models import User
 from django.contrib.auth.tokens import \
@@ -11,6 +15,8 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from horizon import forms, messages
 
+from.models import Orders
+
 from horizon.utils import validators
 from horizon_contrib.forms import SelfHandlingForm
 from leonardo.utils.emails import send_templated_email as send_mail
@@ -19,41 +25,69 @@ from django.conf import settings
 
 class OrderForm(SelfHandlingForm):
 
-    jmeno = forms.CharField(label=("Jméno"),
+    import sys
+    reload(sys)
+    sys.setdefaultencoding('UTF8')
+
+    error_required = 'Toto pole je vyžadováno.'
+    invalid_email_message = 'Zadejte správný formát e-mailu.'
+
+    jmeno = forms.CharField(label="Jméno",
                             max_length=255,
                             widget=forms.TextInput(
-        attrs={'placeholder':
-               _('Username'),
-               'autofocus': 'autofocus'}))
+                                attrs={'placeholder':
+                                       'Jméno',
+                                       'autofocus': 'autofocus'}),
+                            error_messages={'required': error_required})
 
-    prijmeni = forms.CharField(label=_("Prijmeni"),
+    prijmeni = forms.CharField(label="Příjmení",
                                max_length=255,
                                widget=forms.TextInput(
-        attrs={'placeholder':
-               _('Username'),
-               'autofocus': 'autofocus'}))
+                                   attrs={'placeholder':
+                                          'Příjmení'}),
+                               error_messages={'required': error_required})
 
-    telefon = forms.IntegerField(label=_("Telefon"),
-                                 widget=forms.NumberInput())
+    email = forms.EmailField(label="E-mail",
+                             widget=forms.EmailInput(
+                                 attrs={'placeholder': 'E-mail'}),
+                             error_messages={'required': error_required,
+                                             'invalid': invalid_email_message})
 
-    email = forms.EmailField(label=_("E-mail"),
-                             widget=forms.EmailInput())
+    telefon = forms.IntegerField(label="Telefon",
+                                 widget=forms.NumberInput(
+                                     attrs={'placeholder': 'Telefon'}),
+                                 error_messages={'required': error_required})
 
-    zprava = forms.CharField(label=_("Zprava"),
-                             widget=forms.Textarea())
+    zprava = forms.CharField(label="Zpráva",
+                             widget=forms.Textarea(
+                                 attrs={
+                                     'placeholder':
+                                     'Zašlete nám Vaši objednávku'}),
+                             error_messages={
+                                 'required': error_required
+                             })
 
     def __init__(self, *args, **kwargs):
         super(OrderForm, self).__init__(*args, **kwargs)
 
         self.helper.layout = Layout(
-            Div('jmeno', style='padding:0px', css_class='col-md-6'),
-            Div('prijmeni', style='padding:0px', css_class='col-md-6'),
-            Div('telefon', 'email', 'zprava', css_class='col-md-12')
+            Div('jmeno', style='padding:5px', css_class='col-md-6'),
+            Div('prijmeni', style='padding:5px', css_class='col-md-6'),
+            PrependedText('email', '@', placeholder="E-mail"),
+            Div('telefon', 'zprava', style='padding:5px',
+                css_class='col-md-12')
         )
 
     def handle(self, request, data):
-        if request.user.is_authenticated():
-            messages.success(request, _("Order success."))
-        else:
-            messages.error(request, _("Login failed."))
+        try:
+            Orders.objects.create(jmeno=data['jmeno'],
+                                  prijmeni=data['prijmeni'],
+                                  email=data['email'],
+                                  telefon=data['telefon'],
+                                  zprava=data['zprava'])
+            order = Orders.objects.get(jmeno=data['jmeno'])
+            order.save()
+            messages.success(request, "Objednávka úspěšně dokončena.")
+        except:
+            messages.error(request, "Objednávka neúspěšná.")
         return True

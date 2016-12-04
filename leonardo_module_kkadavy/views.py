@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from django.conf import settings
 from django.contrib.auth import logout as auth_logout
 from django.contrib.sites.models import Site
@@ -23,8 +23,8 @@ class OrderSthView(forms.ModalFormView):
         ret = super(OrderSthView, self).get_context_data(**kwargs)
 
         ret.update({
-            "view_name": _("Order"),
+            "view_name": 'Objednávací list',
             "modal_size": 'md',
-            "modal_header": _("Order")})
+            "modal_header": 'Objednávací list'})
 
         return ret

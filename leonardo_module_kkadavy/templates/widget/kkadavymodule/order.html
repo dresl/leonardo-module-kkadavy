@@ -2,7 +2,17 @@
 {% load i18n %}
 
 {% block content %}
-<ul class="navbar-collapse collapse nav navbar-nav{% if widget.align == 'right' %} navbar-right{% endif %}">
-  <li><a class="ajax-modal" href="{% url 'order_sth' %}">Order</a></li>
-</ul>
+<a class="ajax-modal btn btn-primary btn-lg order-list-btn" href="{% url 'order_sth' %}" onclick="UpdateModalFormOrder();">Order</a>
+<script type="text/javascript">
+function UpdateModalFormOrder() {
+    setInterval(function(){
+        var x = document.getElementById("order_form_kkadavy").parentElement;
+        x.style.backgroundImage="url('/static/img/pozadi_plain_blue.jpg')";
+        var y = x.childNodes[1];
+        y.style.borderBottom = "none";
+        y.getElementsByTagName("H3")[0].style.color = "white";
+        y.getElementsByTagName("H3")[0].style.textAlign = "center";
+    }, 1);
+}
+</script>
 {% endblock %}
