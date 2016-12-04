@@ -7,7 +7,7 @@ from .models import Orders
 
 class OrderAdmin(admin.ModelAdmin):
     model = Orders
-    list_display = ('jmeno', 'prijmeni', 'email')
+    list_display = ('prijmeni', 'telefon', 'email', 'datum')
 
 
 admin.site.register(Orders, OrderAdmin)

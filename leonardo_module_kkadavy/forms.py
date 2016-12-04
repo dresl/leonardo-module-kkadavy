@@ -79,15 +79,11 @@ class OrderForm(SelfHandlingForm):
         )
 
     def handle(self, request, data):
-        try:
-            Orders.objects.create(jmeno=data['jmeno'],
-                                  prijmeni=data['prijmeni'],
-                                  email=data['email'],
-                                  telefon=data['telefon'],
-                                  zprava=data['zprava'])
-            order = Orders.objects.get(jmeno=data['jmeno'])
-            order.save()
-            messages.success(request, "Objednávka úspěšně dokončena.")
-        except:
-            messages.error(request, "Objednávka neúspěšná.")
+        Orders.objects.create(jmeno=data['jmeno'],
+                              prijmeni=data['prijmeni'],
+                              email=data['email'],
+                              telefon=data['telefon'],
+                              zprava=data['zprava'],
+                              datum=timezone.now())
+        messages.success(request, "Objednávka úspěšně dokončena.")
         return True
