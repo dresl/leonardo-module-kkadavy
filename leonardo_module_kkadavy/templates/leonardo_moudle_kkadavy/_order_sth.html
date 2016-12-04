@@ -1,0 +1,14 @@
+{% extends "leonardo/common/_modal.html" %}
+{% load i18n %}
+
+{% block form_id %}order_form_kkadavy{% endblock %}
+{% block form_action %}{% url "order_sth" %}{% endblock %}
+
+{% block modal-body %}
+  {{ block.super }}
+{% endblock %}
+
+{% block modal-footer %}
+<a href="#" class="btn btn-default" data-dismiss="modal">{% trans "Close" %}</a>
+<input class="btn btn-primary pull-right" type="submit" value="{% trans "Order" %}" />
+{% endblock %}
