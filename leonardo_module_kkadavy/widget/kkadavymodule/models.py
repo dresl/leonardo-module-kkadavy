@@ -8,6 +8,9 @@ from leonardo_module_kkadavy.models import Orders
 
 class KkadavyModuleWidget(Widget):
 
+    def get_items(self):
+        return Orders.objects.all().order_by("-datum")
+
     class Meta:
         abstract = True
         verbose_name = _('Kkadavy module')

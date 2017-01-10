@@ -1,0 +1,16 @@
+{% extends widget.get_base_template %}
+
+{% block content %}
+<h1>Vzkazy</h1>
+<div class="jumbotron" id="jumbotron">
+{% for item in widget.get_items %}
+<h4>{{ item.zprava }}</h4>
+<hr>
+{% endfor %}
+</div>
+<script type="text/javascript">
+setTimeout (function() {
+  $('#jumbotron').load(document.URL + ' #jumbotron');
+}, 1000);
+</script>
+{% endblock %}

@@ -21,5 +21,5 @@ class Orders(models.Model):
 
     class Meta:
         ordering = ['jmeno', ]
-        verbose_name = 'Order item'
-        verbose_name_plural = 'Order items'
+        verbose_name = 'Položka'
+        verbose_name_plural = 'Položky'

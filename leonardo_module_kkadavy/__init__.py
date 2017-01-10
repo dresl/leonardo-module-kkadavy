@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 from django.apps import AppConfig
 from django.utils.translation import ugettext_lazy as _
 
@@ -22,7 +22,7 @@ class Default(object):
 
 class Config(AppConfig, Default):
     name = 'leonardo_module_kkadavy'
-    verbose_name = _("KkadavyModule")
+    verbose_name = "Speciální modul"
 
 
 default = Default()

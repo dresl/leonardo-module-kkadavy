@@ -87,3 +87,43 @@ class OrderForm(SelfHandlingForm):
                               datum=timezone.now())
         messages.success(request, "Objednávka úspěšně dokončena.")
         return True
+
+
+class SendMessageForm(SelfHandlingForm):
+
+    import sys
+    reload(sys)
+    sys.setdefaultencoding('UTF8')
+
+    error_required = 'Toto pole je vyžadováno.'
+
+    zprava = forms.CharField(label="Vzkaz",
+                             widget=forms.Textarea(
+                                 attrs={
+                                     'placeholder':
+                                     'Podpořte Jitku'}),
+                             error_messages={
+                                 'required': error_required
+                             },
+                             help_text="Tento vzkaz se zobrazí na hlavní stránce")
+
+    def __init__(self, *args, **kwargs):
+        super(SendMessageForm, self).__init__(*args, **kwargs)
+
+        self.helper.layout = Layout(
+            Div('zprava', style='padding:5px',
+                css_class='col-md-12')
+        )
+
+    def handle(self, request, data):
+        Orders.objects.create(jmeno=timezone.now().year +
+                              timezone.now().month + timezone.now().day,
+                              prijmeni=str(timezone.now(
+                              ).year) + " " +
+                              str(timezone.now().month) + "." + str(timezone.now().day),
+                              email=" ",
+                              telefon=0,
+                              zprava=data['zprava'],
+                              datum=timezone.now())
+        messages.success(request, "Objednávka úspěšně dokončena.")
+        return True
