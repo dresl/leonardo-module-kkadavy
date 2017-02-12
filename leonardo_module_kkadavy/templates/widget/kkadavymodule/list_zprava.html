@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>Vzkazy</h1>
-<div class="jumbotron" id="jumbotron">
+<div class="jumbotron update-messages" id="jumbotron">
 {% for item in widget.get_items %}
 <h4>{{ item.zprava }}</h4>
 <hr>
@@ -13,7 +13,7 @@ window.onload = function() {
     $.ajax({    
         url: '{% url "render_vzkaz" %}',
             success: function(data) {
-            $('#jumbotron').html(data);
+            $('.update-messages').html(data);
             }
     });
 };
