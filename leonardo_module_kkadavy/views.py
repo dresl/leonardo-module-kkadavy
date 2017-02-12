@@ -12,6 +12,8 @@ from leonardo.decorators import require_auth
 
 from django.core.urlresolvers import reverse
 from django.utils.decorators import method_decorator
+from django.shortcuts import render
+from leonardo_module_kkadavy.models import Orders
 
 
 class OrderSthView(forms.ModalFormView):
@@ -44,3 +46,10 @@ class SendMessageView(forms.ModalFormView):
             "modal_header": 'Pošlete vzkaz'})
 
         return attr
+
+
+def RenderVzkazy(request):
+    orders = Orders.objects.all().order_by("-datum")
+
+    return render(request, 'widget/kkadavymodule/render_vzkazy.html',
+                  {'orders': orders})

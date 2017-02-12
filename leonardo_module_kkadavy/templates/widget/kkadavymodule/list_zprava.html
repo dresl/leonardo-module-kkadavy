@@ -8,4 +8,14 @@
 <hr>
 {% endfor %}
 </div>
+<script type="text/javascript">
+window.onload = function() {
+    $.ajax({    
+        url: '{% url "render_vzkaz" %}',
+            success: function(data) {
+            $('#jumbotron').html(data);
+            }
+    });
+};
+</script>
 {% endblock %}

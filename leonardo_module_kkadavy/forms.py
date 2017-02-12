@@ -15,7 +15,7 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from horizon import forms, messages
 
-from.models import Orders
+from .models import Orders
 
 from horizon.utils import validators
 from horizon_contrib.forms import SelfHandlingForm
@@ -116,7 +116,7 @@ class SendMessageForm(SelfHandlingForm):
         )
 
     def handle(self, request, data):
-        Orders.objects.create(jmeno=timezone.now().year +
+        order = Orders.objects.create(jmeno=timezone.now().year +
                               timezone.now().month + timezone.now().day,
                               prijmeni=str(timezone.now(
                               ).year) + " " +
@@ -125,5 +125,6 @@ class SendMessageForm(SelfHandlingForm):
                               telefon=0,
                               zprava=data['zprava'],
                               datum=timezone.now())
-        messages.success(request, "Objednávka úspěšně dokončena.")
+        order.save()
+        messages.success(request, "Vzkaz úspěšne poslán.")
         return True
