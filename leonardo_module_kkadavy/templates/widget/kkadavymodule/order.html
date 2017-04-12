@@ -5,7 +5,7 @@
 <a class="ajax-modal btn btn-primary btn-lg order-list-btn" href="{% url 'order_sth' %}" onclick="UpdateModalFormOrder();">Objednávací list</a>
 <script type="text/javascript">
 function UpdateModalFormOrder() {
-    setInterval(function(){
+    setTimeout(function(){
         var x = document.getElementById("order_form_kkadavy").parentElement;
         x.style.backgroundImage="url('/static/img/pozadi_plain_blue.jpg')";
         var y = x.childNodes[1];

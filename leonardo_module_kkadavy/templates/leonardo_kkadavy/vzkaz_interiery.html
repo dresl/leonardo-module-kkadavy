@@ -1,0 +1,12 @@
+{% extends "leonardo/common/modal.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Poslat zprávu" %}{% endblock %}
+
+{% block page_header %}
+{% include "horizon/common/_page_header.html" with title=_("Poslat zprávu") %}
+{% endblock %}
+
+{% block body_main %}
+{% include "leonardo_kkadavy/_vzkaz_interiery.html" %}
+{% endblock %}

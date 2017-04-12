@@ -6,7 +6,7 @@ from django.shortcuts import redirect
 from django.utils.translation import ugettext_lazy as _
 from leonardo import forms, messages
 
-from .forms import OrderForm, SendMessageForm
+from .forms import OrderForm, SendMessageForm, VzkazVavraForm
 from django.http import HttpResponseRedirect
 from leonardo.decorators import require_auth
 
@@ -28,6 +28,22 @@ class OrderSthView(forms.ModalFormView):
             "view_name": 'Objednávací list',
             "modal_size": 'md',
             "modal_header": 'Objednávací list'})
+
+        return ret
+
+
+class VzkazVavraView(forms.ModalFormView):
+    form_class = VzkazVavraForm
+    template_name = 'leonardo_kkadavy/vzkaz_interiery.html'
+    submit_label = _("Poslat zprávu")
+
+    def get_context_data(self, **kwargs):
+        ret = super(VzkazVavraView, self).get_context_data(**kwargs)
+
+        ret.update({
+            "view_name": 'Poslat zprávu',
+            "modal_size": 'md',
+            "modal_header": 'Poslat zprávu'})
 
         return ret
 

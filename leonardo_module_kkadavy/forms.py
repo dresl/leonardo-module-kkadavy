@@ -89,6 +89,72 @@ class OrderForm(SelfHandlingForm):
         return True
 
 
+class VzkazVavraForm(SelfHandlingForm):
+
+    import sys
+    reload(sys)
+    sys.setdefaultencoding('UTF8')
+
+    error_required = 'Toto pole je vyžadováno.'
+    invalid_email_message = 'Zadejte správný formát e-mailu.'
+
+    jmeno = forms.CharField(label="Jméno",
+                            max_length=255,
+                            widget=forms.TextInput(
+                                attrs={'placeholder':
+                                       'Jméno',
+                                       'autofocus': 'autofocus'}),
+                            error_messages={'required': error_required})
+
+    prijmeni = forms.CharField(label="Příjmení",
+                               max_length=255,
+                               widget=forms.TextInput(
+                                   attrs={'placeholder':
+                                          'Příjmení'}),
+                               error_messages={'required': error_required})
+
+    email = forms.EmailField(label="E-mail",
+                             widget=forms.EmailInput(
+                                 attrs={'placeholder': 'E-mail'}),
+                             error_messages={'required': error_required,
+                                             'invalid': invalid_email_message})
+
+    telefon = forms.IntegerField(label="Telefon",
+                                 widget=forms.NumberInput(
+                                     attrs={'placeholder': 'Telefon'}),
+                                 error_messages={'required': error_required})
+
+    zprava = forms.CharField(label="",
+                             widget=forms.Textarea(
+                                 attrs={
+                                     'placeholder':
+                                     'Zde napište Vaši zprávu'}),
+                             error_messages={
+                                 'required': error_required
+                             })
+
+    def __init__(self, *args, **kwargs):
+        super(VzkazVavraForm, self).__init__(*args, **kwargs)
+        self.helper.layout = Layout(
+            Div('jmeno', style='padding:5px',
+                css_class='col-md-6 form-input-dark'),
+            Div('prijmeni', style='padding:5px',
+                css_class='col-md-6 form-input-dark'),
+            Div('email', 'telefon', 'zprava',
+                style='padding:5px', css_class='col-md-12 form-input-dark')
+        )
+
+    def handle(self, request, data):
+        Orders.objects.create(jmeno=data['jmeno'],
+                              prijmeni=data['prijmeni'],
+                              email=data['email'],
+                              telefon=data['telefon'],
+                              zprava=data['zprava'],
+                              datum=timezone.now())
+        messages.success(request, "Zpráva byla úspěšně odeslána")
+        return True
+
+
 class SendMessageForm(SelfHandlingForm):
 
     import sys
@@ -117,14 +183,15 @@ class SendMessageForm(SelfHandlingForm):
 
     def handle(self, request, data):
         order = Orders.objects.create(jmeno=timezone.now().year +
-                              timezone.now().month + timezone.now().day,
-                              prijmeni=str(timezone.now(
-                              ).year) + " " +
-                              str(timezone.now().month) + "." + str(timezone.now().day),
-                              email=" ",
-                              telefon=0,
-                              zprava=data['zprava'],
-                              datum=timezone.now())
+                                      timezone.now().month + timezone.now().day,
+                                      prijmeni=str(timezone.now(
+                                      ).year) + " " +
+                                      str(timezone.now().month) +
+                                      "." + str(timezone.now().day),
+                                      email=" ",
+                                      telefon=0,
+                                      zprava=data['zprava'],
+                                      datum=timezone.now())
         order.save()
         messages.success(request, "Vzkaz úspěšne poslán.")
         return True
