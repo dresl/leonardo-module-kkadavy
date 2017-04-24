@@ -7,12 +7,24 @@
 function UpdateModalFormOrder() {
     setTimeout(function(){
         var x = document.getElementById("order_form_kkadavy").parentElement;
-        x.style.backgroundImage="url('/static/img/pozadi_plain_blue.jpg')";
+        x.style.backgroundColor="#0e1e2f";
         var y = x.childNodes[1];
         y.style.borderBottom = "none";
         y.getElementsByTagName("H3")[0].style.color = "white";
         y.getElementsByTagName("H3")[0].style.textAlign = "center";
-    }, 1);
+        $(".fa.fa-expand").hide();
+        $(".btn.btn-submit-order").click(function(){
+            setTimeout(function(){
+                var x = document.getElementById("order_form_kkadavy").parentElement;
+                x.style.backgroundColor="#0e1e2f";
+                var y = x.childNodes[1];
+                y.style.borderBottom = "none";
+                y.getElementsByTagName("H3")[0].style.color = "white";
+                y.getElementsByTagName("H3")[0].style.textAlign = "center";
+                $(".fa.fa-expand").hide();
+            }, 200);
+        });
+    }, 200);
 }
 </script>
 {% endblock %}
