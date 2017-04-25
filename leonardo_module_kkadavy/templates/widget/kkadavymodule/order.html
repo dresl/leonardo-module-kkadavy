@@ -7,11 +7,16 @@
 function UpdateModalFormOrder() {
     var interval_id = setInterval(function(){
         var x = document.getElementById("order_form_kkadavy").parentElement;
-        x.style.backgroundColor="#0e1e2f";
+        x.style.backgroundImage="url('/static/img/pozadi_objednavaci_list.jpg')";
+        x.style.backgroundSize="cover";
         var y = x.childNodes[1];
         y.style.borderBottom = "none";
         y.getElementsByTagName("H3")[0].style.color = "white";
         y.getElementsByTagName("H3")[0].style.textAlign = "center";
+        $(".close").css("color", "#ffffff");
+        $(".close").css("font-size", "22px");
+        $(".close").css("text-shadow", "none");
+        $(".close").css("opacity", "1");
         $(".fa.fa-expand").hide();
         $("a.close").click(function() {    
             var killId = setTimeout(function() {
