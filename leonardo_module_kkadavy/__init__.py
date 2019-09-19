@@ -4,20 +4,24 @@ from django.utils.translation import ugettext_lazy as _
 
 default_app_config = 'leonardo_module_kkadavy.Config'
 
+try:
+    from local_settings import APPS
+except ImportError:
+    pass
 
 class Default(object):
+    if 'leonardo_module_kkadavy' in APPS:
+        optgroup = 'Kkadavy widgets'
 
-    optgroup = 'Kkadavy widgets'
+        apps = [
+            'leonardo_module_kkadavy'
+        ]
 
-    apps = [
-        'leonardo_module_kkadavy'
-    ]
+        widgets = [
+            'leonardo_module_kkadavy.widget.kkadavymodule.models.KkadavyModuleWidget'
+        ]
 
-    widgets = [
-        'leonardo_module_kkadavy.widget.kkadavymodule.models.KkadavyModuleWidget'
-    ]
-
-    public = True
+        public = True
 
 
 class Config(AppConfig, Default):
